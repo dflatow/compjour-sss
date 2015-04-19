@@ -1,8 +1,12 @@
-import bs4
 import requests
+import json
 
 
-response = requests.get('http://www.state.gov/secretary/travel/index.htm')
-soup = bs4.BeautifulSoup(response.text)
-m = soup.select("body div#dos-wrapper div#content-output div.travel-wrap li#total-mileage span")[0]
-print("The number of miles traveled by the current U.S. Secretary of State: ", m.text.strip())
+data_url = "https://analytics.usa.gov/data/live/ie.json"
+# fetch the data file
+response = requests.get(data_url)
+text = response.text
+# parse the data
+data = json.loads(text)
+
+print("The number of people who visited a U.S. government website using Internet Explorer 6.0 in the last 90 days:", data['totals']['ie_version']['6.0'])
